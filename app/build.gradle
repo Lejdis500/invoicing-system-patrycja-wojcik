@@ -14,7 +14,6 @@ plugins {
     id 'application'
 
     id 'checkstyle'
-}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -42,7 +41,6 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
-
 checkstyle{
     showViolations = true
     ignoreFailures = false
