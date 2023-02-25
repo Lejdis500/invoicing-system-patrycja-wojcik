@@ -1,9 +1,9 @@
 name: CI
 on:
   push:
-    branches: [master]
+    branches: [task2]
     pull_request:
-      branches: [master]
+      branches: [task2]
       workflow_dispatch:
 
         jobs:
@@ -16,10 +16,7 @@ on:
             uses: actions/setup-java@v1
             with:
               java-version: '14'
-              distribution: 'temurin'
+
           - name: Build with gradle
             uses: ./ gradlew build
-          - name: Build with Gradle
-            uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-            with:
-              arguments: build
+

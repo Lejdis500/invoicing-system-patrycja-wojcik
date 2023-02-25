@@ -4,6 +4,16 @@
 
 package pl.futurecollars.invoicing;
 
+import java.io.File;
+import java.time.LocalDate;
+import java.util.List;
+import pl.futurecollars.invoicing.db.Database;
+import pl.futurecollars.invoicing.db.memory.InMemoryDatabase;
+import pl.futurecollars.invoicing.model.Company;
+import pl.futurecollars.invoicing.model.Invoice;
+import pl.futurecollars.invoicing.model.InvoiceEntry;
+import pl.futurecollars.invoicing.service.InvoiceService;
+
 public class App {
 
   public String getGreeting() {
@@ -11,6 +21,40 @@ public class App {
   }
 
   public static void main(String[] args) {
+    Database db = new InMemoryDatabase();
+    InvoiceService service = new InvoiceService(db);
+    Company buyer = new Company();
+    Company seller = new Company();
+    List<InvoiceEntry> products = List.of(new InvoiceEntry());
+    Invoice invoice = new Invoice(LocalDate.now(), buyer, seller, products);
+    int id = service. (invoice);
+
+    service.delete(id);
+    System.out.println(invoice.toString());
+    ObjectMapper objectMapper = new ObjectMapper;
+    ObjectMapper.registerModule(new JavaTimeModule ());
+    ObjectMapper.disbale(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    ObjectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    ObjectMapper objectMapperYaml = new ObjectMapper (new YAMLFactory());
+    objectMapperYaml.registerModule (new JavaTimeModule());
+
+    objectMapperYaml.writeValue (new File("invoice.yaml"));
+    objectMapperYaml.disable (SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    Invoice invoiceFromYaml = objectMapperYaml.readValue("invoice.yaml", Invoice.class);
+    //wyjatek
+
+    String invoiceAsJson = objectMapper.writeValueAsString(List.of(invoice));
+
+    //wyjatek
+    System.out.println(invoiceAsJson);
+  }
+  objectMapper.writeValue(new File("invoice.json"), invoice);
+  // wujatek
+//zapis do pliku - invoice.json -open in -explorer-
+  ///window (c) -invoice.json
+  Invoice invoiceFromFile = objectMapper.readValue(new File("invice.json"),Invoice.class);
+
     System.out.println(new App().getGreeting());
   }
 }
