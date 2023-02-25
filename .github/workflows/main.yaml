@@ -1,9 +1,9 @@
 name: CI
 on:
   push:
-    branches: [task2]
+    branches: [ task2 ]
     pull_request:
-      branches: [task2]
+      branches: [ task2 ]
       workflow_dispatch:
 
         jobs:
@@ -18,5 +18,5 @@ on:
               java-version: '14'
 
           - name: Build with gradle
-            uses: ./ gradlew build
+            run: ./ gradlew build
 
