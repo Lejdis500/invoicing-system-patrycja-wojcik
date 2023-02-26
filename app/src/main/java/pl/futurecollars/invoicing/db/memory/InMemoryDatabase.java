@@ -1,5 +1,6 @@
 package pl.futurecollars.invoicing.db.memory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,21 +23,25 @@ public class InMemoryDatabase implements Database {
 
   @Override
   public Optional<Invoice> getById(int id) {
-    return Optional.empty();xx
+    return Optional.ofNullable(invoices.get(id));
   }
 
   @Override
   public List<Invoice> getAll() {
-    return null;xx
+    return new ArrayList<>(invoices.values());
   }
 
   @Override
   public void update(int id, Invoice updatedInvoice) {
-xx
+    if ((!invoices.containsKey(id))) {
+      throw new IllegalArgumentException("Id" + id + "does not exist");
+    }
+    updatedInvoice.setId(id);
+    invoices.put(id, updatedInvoice;
   }
 
   @Override
   public void delete(int id) {
-xx
+    invoices.remove(id);
   }
 }
