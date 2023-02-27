@@ -25,23 +25,14 @@ public class App {
   public static void main(String[] args) {
     Database db = new InMemoryDatabase();
     InvoiceService service = new InvoiceService(db);
-    Company buyer = new Company("123-345-467", "ul. Nijaka 1/2 Nigdzie", "MojaFima");
-    Company seller = new Company("456-333-123", "ul. Nijaka 4/5 Nigdzie", "TwojaFima");
-    List<InvoiceEntry> products = List.of(new InvoiceEntry("Wypozyczenie sprzetu", BigDecimal.valueOf(100), BigDecimal.TEN, Vat.VAT_8));
+    Company buyer = new Company("123-345-467", "ul. Weronicza, 11-227 Kraków", "MojaFima");
+    Company seller = new Company("456-333-123", "ul. Konopnicka 2A/$id 03-287 Warszawa, Polska ", "Rechnungen Finanze");
+    List<InvoiceEntry> products = List.of(new InvoiceEntry("Biuro podróży- dookoła świata ", BigDecimal.valueOf(100), BigDecimal.TEN, Vat.VAT_8));
     Invoice invoice = new Invoice(LocalDate.now(), buyer, seller, products);
     int id = service.save(invoice);
 
     service.delete(id);
     System.out.println(invoice.toString());
-
-
-
-
-
-
-  // wujatek
-//zapis do pliku - invoice.json -open in -explorer-
-  ///window (c) -invoice.json
 
 
     System.out.println(new App().getGreeting());
