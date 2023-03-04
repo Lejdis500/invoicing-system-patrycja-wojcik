@@ -4,7 +4,6 @@
 
 package pl.futurecollars.invoicing;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,8 +32,6 @@ public class App {
 
     service.delete(id);
     System.out.println(invoice.toString());
-
-
     System.out.println(new App().getGreeting());
   }
 }
