@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing
+package pl.futurecollars.invoicing.helpers
 
 import pl.futurecollars.invoicing.model.Company
 import pl.futurecollars.invoicing.model.Invoice
@@ -10,7 +10,7 @@ import java.time.LocalDate
 class TestHelpers {
 
     static company(int id) {
-        new Company(("id").repeat(10),
+        new Company(("$id").repeat(10),
                 "ul. Konopnicka 2A/$id 03-287 Warszawa, Polska",
                 "Rechnungen,Finanzen $id Sp. z o.o")
     }

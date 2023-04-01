@@ -1,10 +1,10 @@
-package pl.futurecollars.invoicing.service;
+package pl.futurecollars.invoicing.service
 
-import junit.framework.TestCase
+
 import pl.futurecollars.invoicing.db.Database
 import spock.lang.Specification
 
-import static pl.futurecollars.invoicing.TestHelpers.invoice
+import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 class InvoiceServiceUnitTest extends Specification {
     private InvoiceService service
