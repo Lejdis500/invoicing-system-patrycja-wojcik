@@ -59,39 +59,21 @@ public class FileBasedDatabase implements Database {
   public void update(int id, Invoice updatedInvoice) {
     try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
-      List<String> listWithoutInvoiceWIthId= allInvoices.stream()
+      List<String> listWithoutInvoiceWIthId = allInvoices.stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
 
       if (allInvoices.size() == listWithoutInvoiceWIthId.size()) {
-        throw new IllegalArgumentException("Invoice with Id: " + id + " does not exist");
+        throw new IllegalArgumentException("Id " + id + " does not exist");
       }
 
       updatedInvoice.setId(id);
-       listWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
-      filesService.writeLinesToFile(databasePath,listWithoutInvoiceWIthId);
+      listWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
+      filesService.writeLinesToFile(databasePath, listWithoutInvoiceWIthId);
 
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
-
-
-//    zostawić sobie oryginalną liste i filtrwac na kopii
-//    odflistrować wszystkie z innym id(!contains(.....))i zapisać do {
-//      listy(listy nie zwracać)
-//    }
-//    jeżeli długość oryginalnej listy jes taka sama jak tej odflitrowanej to zwróci błąd
-//
-//    ustawic id
-//    dodać nowa fakture do {
-//      listy tej
-//    } odfilstrowanej
-
-
-
-
-
   }
 
   @Override
@@ -110,7 +92,7 @@ public class FileBasedDatabase implements Database {
   }
 
   private boolean containsId(String line, int id) {
-    return line.contains("\"id\":" + ",");
+    return line.contains("\"id\":" + id + ",");
   }
 
 }

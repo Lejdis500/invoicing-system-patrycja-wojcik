@@ -7,8 +7,8 @@ import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 abstract class AbstractDatabaseTest extends Specification {
 
-    private List<Invoice> invoices = (1..12).collect { invoice(it) }
-    private Database database = getDatabaseInstance();
+     List<Invoice> invoices = (1..12).collect { invoice(it) }
+     Database database = getDatabaseInstance();
 
     abstract Database getDatabaseInstance()
 

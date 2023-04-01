@@ -31,13 +31,8 @@ public class IdService {
     try {
       filesService.writeToFile(idFilePath, String.valueOf(nextId + 1));
       return nextId++;
-    }catch (IOException e){
+    } catch (IOException e) {
       throw new RuntimeException("Failed to read id file", e);
     }
   }
 }
-
-
-
-
-

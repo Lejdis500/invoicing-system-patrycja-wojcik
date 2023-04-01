@@ -9,7 +9,7 @@ class IdServiceTest extends Specification {
 
     def path = File.createTempFile('test', '.txt').toPath()
 
-    def " should return next id increment if file is empty"() {
+    def "should return next id increment if file is empty"() {
         given:
         def idService = new IdService(path, new FilesService())
         when:

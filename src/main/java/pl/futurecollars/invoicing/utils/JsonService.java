@@ -13,9 +13,7 @@ public class JsonService {
     mapper.findAndRegisterModules();
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
   }
-
-
-  public String toJson(Object object){
+  public String toJson(Object object) {
     try {
       return mapper.writeValueAsString(object);
     } catch (JsonProcessingException e) {
@@ -23,11 +21,11 @@ public class JsonService {
     }
   }
 
-  public <T> T toObject(String json, Class<T> clazz){
+  public <T> T toObject(String json, Class<T> clazz) {
     try {
-      return mapper.readValue(json,clazz);
+      return mapper.readValue(json, clazz);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException ("Failed to parse JSON" + e);
+      throw new RuntimeException("Failed to parse JSON" + e);
     }
   }
 

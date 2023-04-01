@@ -2,6 +2,7 @@ package pl.futurecollars.invoicing.utils;
 
 import spock.lang.Specification
 
+import javax.sound.sampled.Line
 import java.nio.file.Files;
 
 class FilesServiceTest extends Specification {
@@ -20,28 +21,29 @@ class FilesServiceTest extends Specification {
 
     def "should write to file"() {
         given:
-        def line = "tekst line"
+        def line = "test line"
         when:
         filesService.writeToFile(path, line)
         then:
         [line] == Files.readAllLines(path)
     }
 
-    def "should write Lines To File"() {
+    def "should write lines to file"() {
         given:
-        def line = "tekst line"
+        def line = "test line"
         when:
-        filesService.writeLinesToFile(path, line)
+        filesService.writeLinesToFile(path, [line])
         then:
         [line] == Files.readAllLines(path)
     }
 
     def "should read all lines"() {
         given:
-        def line = "tekst line"
+        def line = "test line"
+        filesService.writeLinesToFile(path, [line])
         when:
-        filesService.writeLinesToFile(path, line)
+        def result = filesService.readAllLines(path)
         then:
-        [line] == Files.readAllLines(path)
+        [line] == result
     }
 }
