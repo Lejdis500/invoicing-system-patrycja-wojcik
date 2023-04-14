@@ -62,12 +62,12 @@ abstract class AbstractDatabaseTest extends Specification {
         database.getAll().isEmpty()
     }
 
-    def "deleting not existing invoice is not causing any error"() {
+    def "deleting not existing invoice is not causing any error and returns optional empty"() {
         expect:
-        database.delete(123);
+        database.delete(123) == Optional.empty()
     }
 
-    def "it's possible to update the invoice"() {
+    def "it's possible to update the invoice and original invoice is returned"() {
         given:
         int id = database.save(invoices.get(0))
 
@@ -78,7 +78,7 @@ abstract class AbstractDatabaseTest extends Specification {
         database.getById(id).get() == invoices.get(1)
     }
 
-    def "updating not existing invoice throws exception"() {
+    def "updating not existing invoice throws exception and return oprional empty"() {
         when:
         database.update(213, invoices.get(1))
 
