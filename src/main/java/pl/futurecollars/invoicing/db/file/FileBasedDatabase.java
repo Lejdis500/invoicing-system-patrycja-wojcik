@@ -56,7 +56,7 @@ public class FileBasedDatabase implements Database {
   }
 
   @Override
-  public void update(int id, Invoice updatedInvoice) {
+  public Optional<Invoice> update(int id, Invoice updatedInvoice) {
     try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
       List<String> listWithoutInvoiceWIthId = allInvoices.stream()
@@ -71,20 +71,26 @@ public class FileBasedDatabase implements Database {
       listWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
       filesService.writeLinesToFile(databasePath, listWithoutInvoiceWIthId);
 
+      allInvoices.removeAll(listWithoutInvoiceWIthId);
+      return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
   @Override
-  public void delete(int id) {
+  public Optional<Invoice> delete(int id) {
     try {
-      List<String> updatedList = filesService.readAllLines(databasePath)
+      var allInvoices = filesService.readAllLines(databasePath);
+      var invoicesExceptDeleted = allInvoices
           .stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
 
-      filesService.writeLinesToFile(databasePath, updatedList);
+      filesService.writeLinesToFile(databasePath, invoicesExceptDeleted);
+
+      allInvoices.removeAll(invoicesExceptDeleted);
+      return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
 
     } catch (IOException e) {
       throw new RuntimeException(e);
