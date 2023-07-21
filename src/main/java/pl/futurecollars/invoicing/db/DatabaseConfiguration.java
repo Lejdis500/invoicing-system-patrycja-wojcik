@@ -35,4 +35,5 @@ public class DatabaseConfiguration {
   public Database inMemoryDatabase() {
     return new InMemoryDatabase();
   }
+
 }
