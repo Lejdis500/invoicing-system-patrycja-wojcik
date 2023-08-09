@@ -11,5 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Mark gradlew as executable
+        run: chmod +x ./gradle
       - name: Build with gradle
         run: ./gradlew build
