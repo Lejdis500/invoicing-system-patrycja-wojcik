@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceEntry {
+
   @ApiModelProperty(value = "Product/service description", required = true, example = "Dell X12 v3")
   private String description;
 
