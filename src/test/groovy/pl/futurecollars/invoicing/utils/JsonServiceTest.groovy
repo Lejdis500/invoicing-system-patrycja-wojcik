@@ -30,4 +30,24 @@ class JsonServiceTest extends Specification {
 
 
     }
+
+    def "should throw exception while to object"() {
+        given:
+        def companyJson = "taxIdentificationNumber\":\"0000000000\",\"address\":\"ul. Konopnicka 2A/0 03-287 Warszawa, Polska\",\"name\":\"Rechnungen,Finanzen 0 Sp. z o.o\"}"
+        when:
+        jsonService.toObject(companyJson, Company.class)
+        then:
+        thrown(RuntimeException)
+
+
+    }
+
+    def "should throw exception while to json"() {
+        given:
+        def companyJson = "taxIdentificationNumber\":\"0000000000\",\"address\":\"ul. Konopnicka 2A/0 03-287 Warszawa, Polska\",\"name\":\"Rechnungen,Finanzen 0 Sp. z o.o\"}"
+        when:
+        jsonService.toJson(companyJson, Company.class)
+        then:
+        thrown(RuntimeException)
+    }
 }

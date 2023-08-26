@@ -1,6 +1,5 @@
 package pl.futurecollars.invoicing.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class JsonService {
   public String toJson(Object object) {
     try {
       return mapper.writeValueAsString(object);
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       throw new RuntimeException("Failed to convert string to JSON" + e);
     }
   }
@@ -27,7 +26,7 @@ public class JsonService {
   public <T> T toObject(String json, Class<T> clazz) {
     try {
       return mapper.readValue(json, clazz);
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       throw new RuntimeException("Failed to parse JSON" + e);
     }
   }
