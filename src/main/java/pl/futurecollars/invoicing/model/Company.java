@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-
 @Builder
 public class Company {
 

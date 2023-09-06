@@ -17,6 +17,7 @@ class TestHelpers {
                 .build()
     }
 
+
     static product(int id) {
         InvoiceEntry.builder()
                 .description("Programming course $id")
