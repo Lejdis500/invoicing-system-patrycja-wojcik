@@ -91,9 +91,4 @@ class AbstractControllerTest extends Specification {
         jsonService.toObject(response, TaxCalculatorResult)
 
     }
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> a5e0a51 (Task9)
