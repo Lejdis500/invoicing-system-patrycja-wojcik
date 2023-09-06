@@ -15,4 +15,4 @@ logging:
     pl:
       futurecollars:
         invoicing: WARN
-        invoicing.db: DEBUG`
+        invoicing.db: DEBUG
