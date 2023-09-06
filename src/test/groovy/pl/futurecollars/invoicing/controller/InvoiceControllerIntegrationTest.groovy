@@ -1,13 +1,11 @@
 package pl.futurecollars.invoicing.controller
 
-import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
-
-
-//@WebMvcTest(controllers = [InvoiceController])
-
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.SpringBootTest
+import pl.futurecollars.invoicing.db.AbstractDatabaseTest
+import pl.futurecollars.invoicing.db.Database
+@WebMvcTest(controllers = [InvoiceController])
 class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     def "empty array is returned when no invoices were added"() {
         expect:
@@ -52,10 +50,12 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     }
 
     def "404 is returned when invoice id is not found when getting invoice by id [#id]"() {
+        given:
+        addUniqueInvoices(11)
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.get("$INVOICE_ENDPOINT/$id")
+                get("$INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
 
@@ -65,10 +65,12 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     }
 
     def "404 is returned when invoice id is not found when deleting invoice [#id]"() {
+        given:
+        addUniqueInvoices(11)
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("$INVOICE_ENDPOINT/$id")
+                delete("$INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
 
@@ -78,10 +80,12 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     }
 
     def "404 is returned when invoice id is not found when updating invoice [#id]"() {
+        given:
+        addUniqueInvoices(11)
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.put("$INVOICE_ENDPOINT/$id")
+                put("$INVOICE_ENDPOINT/$id")
                         .content(invoiceAsJson(1))
                         .contentType(MediaType.APPLICATION_JSON)
         )
@@ -100,7 +104,7 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.put("$INVOICE_ENDPOINT/$id")
+                put("$INVOICE_ENDPOINT/$id")
                         .content(jsonService.toJson(updatedInvoice))
                         .contentType(MediaType.APPLICATION_JSON)
         )
