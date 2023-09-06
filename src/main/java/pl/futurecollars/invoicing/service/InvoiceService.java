@@ -13,8 +13,7 @@ public class InvoiceService {
 
   private final Database database;
 
-  @Autowired
-  public InvoiceService(@Qualifier("fileBasedDatabase") Database database) {
+  public InvoiceService(Database database) {
     this.database = database;
   }
 

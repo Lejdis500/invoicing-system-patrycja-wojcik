@@ -1,10 +1,9 @@
 package pl.futurecollars.invoicing.controller
 
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.SpringBootTest
-import pl.futurecollars.invoicing.db.AbstractDatabaseTest
-import pl.futurecollars.invoicing.db.Database
+import pl.futurecollars.invoicing.controller.invoice.InvoiceController
+
 @WebMvcTest(controllers = [InvoiceController])
 class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     def "empty array is returned when no invoices were added"() {
