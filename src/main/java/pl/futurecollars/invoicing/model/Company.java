@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-
 @Builder
 public class Company {
 
@@ -25,5 +24,4 @@ public class Company {
     this.address = address;
     this.name = name;
   }
-
 }
