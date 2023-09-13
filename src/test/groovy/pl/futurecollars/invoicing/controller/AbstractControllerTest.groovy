@@ -1,20 +1,23 @@
 package pl.futurecollars.invoicing.controller
 
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-
-import static  org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import pl.futurecollars.invoicing.model.Company
-import pl.futurecollars.invoicing.service.TaxCalculatorResult
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.service.TaxCalculatorResult
+import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Specification
 
-@SpringBootTest
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
+
 @AutoConfigureMockMvc
+@SpringBootTest
 class AbstractControllerTest extends Specification {
     static final String INVOICE_ENDPOINT = "/invoices"
     static final String TAX_CALCULATOR_ENDPOINT = "/tax"
@@ -92,3 +95,4 @@ class AbstractControllerTest extends Specification {
 
     }
 }
+
