@@ -64,7 +64,7 @@ public class FileBasedDatabase implements Database {
           .collect(Collectors.toList());
 
       if (allInvoices.size() == listWithoutInvoiceWIthId.size()) {
-        throw new IllegalArgumentException("Id " + id + " does not exist");
+        return Optional.empty();
       }
 
       updatedInvoice.setId(id);
