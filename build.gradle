@@ -17,8 +17,8 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
 
     // Apply the groovy plugin to also add support for Groovy (needed for Spock)
     id 'groovy'
@@ -31,20 +31,31 @@ plugins {
     id 'jacoco'
 
 }
+group = 'pl.futurecollars'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(14)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
 dependencies {
-    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+
 
     // Use the latest Groovy version for Spock testing
     testImplementation 'org.codehaus.groovy:groovy:3.0.13'
 
     // Use the awesome Spock testing and specification framework even with Java
     testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
+    testImplementation 'org.spockframework:spock-spring:2.2-groovy-3.0'
     testImplementation 'org.spockframework:spock-spring:2.3-groovy-3.0'
     testImplementation 'junit:junit:4.13.2'
 
@@ -57,6 +68,7 @@ dependencies {
     testCompileOnly('org.projectlombok:lombok:1.18.22')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -64,8 +76,16 @@ dependencies {
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
 }
-
-
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+checkstyle {
+    showViolations = true
+    ignoreFailures = true
+    maxWarnings = 0
+    maxErrors = 0
+}
 application {
     // Define the main class for the application.
     mainClass = 'pl.futurecollars.invoicing.App'
@@ -75,17 +95,6 @@ bootJar {
     enabled = false
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
-
-checkstyle {
-    showViolations = true
-    ignoreFailures = false
-    maxWarnings = 0
-    maxErrors = 0
-}
 
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
@@ -131,11 +140,3 @@ jacocoTestCoverageVerification {
         }))
     }
 }
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(15)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
-    }
-}
-
