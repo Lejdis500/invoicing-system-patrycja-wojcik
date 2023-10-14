@@ -5,6 +5,16 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/8.0/userguide/building_java_projects.html
  */
+buildscript {
+    ext {
+        lombokVersion = '1.18.22'
+        spockVersion = '2.3-groovy-3.0'
+        springBootVersion = '2.4.2'
+        springDependencyManagementVersion = '1.0.11.RELEASE'
+        springFoxStarterVersion = '3.0.0'
+        springFoxUiVersion = '3.0.0'
+    }
+}
 
 plugins {
     id 'org.springframework.boot' version '2.4.2'
@@ -50,6 +60,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
+    implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
 }
 
 
@@ -101,19 +114,20 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.70
+                minimum = 0.85
             }
         }
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.70
+                minimum = 0.85
             }
         }
     }
-    afterEvaluate { // TODO [PK] remove after adding tests in Task #5
+    afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: 'pl/futurecollars/invoicing/controller/**')
+            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**", "pl/futurecollars/invoicing/controller/**"])
+
         }))
     }
 }
