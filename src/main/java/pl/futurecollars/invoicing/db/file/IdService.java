@@ -22,8 +22,8 @@ public class IdService {
       } else {
         nextId = Integer.parseInt(lines.get(0));
       }
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to initialize id database", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Failed to initialize id database", ex);
     }
   }
 
@@ -31,8 +31,8 @@ public class IdService {
     try {
       filesService.writeToFile(idFilePath, String.valueOf(nextId + 1));
       return nextId++;
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to read id file", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Failed to read id file", ex);
     }
   }
 }

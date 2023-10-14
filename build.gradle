@@ -97,6 +97,9 @@ bootJar {
 
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+check {
     finalizedBy jacocoTestCoverageVerification
 }
 
@@ -122,19 +125,19 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.70
+                minimum = 0.85
             }
         }
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.70
+                minimum = 0.85
             }
         }
     }
     afterEvaluate { // TODO [PK] remove after adding tests in Task #5
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**", "pl/futurecollars/invoicing/controller/**"])
+            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**"])
 
         }))
     }
