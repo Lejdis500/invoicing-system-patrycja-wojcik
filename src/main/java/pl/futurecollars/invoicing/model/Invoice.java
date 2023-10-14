@@ -6,9 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Builder
@@ -29,5 +27,4 @@ public class Invoice {
 
   @ApiModelProperty(value = "List of products/services", required = true)
   private List<InvoiceEntry> entries;
-
 }

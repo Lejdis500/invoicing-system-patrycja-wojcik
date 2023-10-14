@@ -64,10 +64,6 @@ public class FileBasedDatabase implements Database {
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
 
-      if (allInvoices.size() == listWithoutInvoiceWIthId.size()) {
-        return Optional.empty();
-      }
-
       updatedInvoice.setId(id);
       invoiceWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
       filesService.writeLinesToFile(databasePath, invoiceWithoutInvoiceWIthId);
