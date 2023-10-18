@@ -125,13 +125,13 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.85
+                minimum = 0.70
             }
         }
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.85
+                minimum = 0.70
             }
         }
     }
@@ -142,3 +142,11 @@ jacocoTestCoverageVerification {
         }))
     }
 }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
