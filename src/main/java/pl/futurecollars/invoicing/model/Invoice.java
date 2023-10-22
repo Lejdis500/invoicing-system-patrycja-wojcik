@@ -27,4 +27,5 @@ public class Invoice {
 
   @ApiModelProperty(value = "List of products/services", required = true)
   private List<InvoiceEntry> entries;
+
 }

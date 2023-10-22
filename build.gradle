@@ -79,9 +79,10 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
 checkstyle {
     showViolations = true
-    ignoreFailures = true
+    ignoreFailures = false
     maxWarnings = 0
     maxErrors = 0
 }
@@ -142,11 +143,3 @@ jacocoTestCoverageVerification {
         }))
     }
 }
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(15)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
-    }
-}
-
