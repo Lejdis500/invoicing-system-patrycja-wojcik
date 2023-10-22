@@ -1,4 +1,4 @@
-package pl.futurecollars.invoicing.config;
+package pl.futurecollars.invoicing.db;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,10 +18,6 @@ import pl.futurecollars.invoicing.utils.JsonService;
 @Slf4j
 @Configuration
 public class DatabaseConfiguration {
-
-  private static final String DATABASE_LOCATION = "db";
-  private static final String ID_FILE_NAME = "id.txt";
-  private static final String INVOICES_FILE_NAME = "invoices.txt";
 
   @Bean
   public IdService idService(FilesService filesService, @Value("${invoicing-system.database.directory}") String databaseDirectory,
