@@ -80,9 +80,10 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
 checkstyle {
     showViolations = true
-    ignoreFailures = true
+    ignoreFailures = false
     maxWarnings = 0
     maxErrors = 0
 }
@@ -133,7 +134,7 @@ jacocoTestCoverageVerification {
             }
         }
     }
-    afterEvaluate { // TODO [PK] remove after adding tests in Task #5
+    afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**", "pl/futurecollars/invoicing/controller/**"])
 
