@@ -28,9 +28,7 @@ public class InvoiceService {
   }
 
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
-
     return database.update(id, updatedInvoice);
-
   }
 
   public Optional<Invoice> delete(int id) {

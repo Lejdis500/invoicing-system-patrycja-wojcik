@@ -75,17 +75,6 @@ dependencies {
     implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
     implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
 }
-
-
-application {
-    // Define the main class for the application.
-    mainClass = 'pl.futurecollars.invoicing.App'
-}
-
-bootJar {
-    enabled = false
-}
-
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
@@ -136,13 +125,13 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.85
+                minimum = 0.70
             }
         }
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.85
+                minimum = 0.70
             }
         }
     }

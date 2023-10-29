@@ -6,8 +6,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import pl.futurecollars.invoicing.model.Invoice
-import pl.futurecollars.invoicing.model.Company
 import pl.futurecollars.invoicing.service.TaxCalculatorResult
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.utils.JsonService
@@ -33,11 +31,11 @@ class AbstractControllerTest extends Specification {
         getAllInvoices().each { invoice -> deleteInvoice(invoice.id) }
     }
 
-    int addInvoiceAndReturnId(Invoice invoice) {
+    int addInvoiceAndReturnId(String invoiceAsJson) {
         Integer.valueOf(
                 mockMvc.perform(
                         post(INVOICE_ENDPOINT)
-                                .content(jsonService.toJson(invoice))
+                                .content(invoiceAsJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                         .andExpect(status().isOk())
@@ -60,7 +58,7 @@ class AbstractControllerTest extends Specification {
     List<Invoice> addUniqueInvoices(int count) {
         (1..count).collect { id ->
             def invoice = invoice(id)
-            invoice.id = addInvoiceAndReturnId(invoice)
+            invoice.id = addInvoiceAndReturnId(jsonService.toJson(invoice))
             return invoice
 
         }
