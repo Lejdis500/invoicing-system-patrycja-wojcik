@@ -45,12 +45,8 @@ public class InvoiceController implements InvoiceApi {
 
   @Override
   public ResponseEntity<?> update(@PathVariable int id, @RequestBody Invoice invoice) {
-    try {
-      invoiceService.update(id, invoice);
-      return ResponseEntity.noContent().build();
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.notFound().build();
-    }
-
+    return invoiceService.update(id, invoice)
+        .map(name -> ResponseEntity.noContent().build())
+        .orElse(ResponseEntity.notFound().build());
   }
 }
