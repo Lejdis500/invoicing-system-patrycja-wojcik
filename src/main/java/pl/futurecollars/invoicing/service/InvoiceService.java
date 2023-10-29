@@ -28,11 +28,8 @@ public class InvoiceService {
   }
 
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
-    try {
-      return database.update(id, updatedInvoice);
-    } catch (Exception e) {
-      return Optional.empty();
-    }
+
+    return database.update(id, updatedInvoice);
 
   }
 

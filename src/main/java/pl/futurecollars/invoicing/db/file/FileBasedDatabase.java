@@ -90,7 +90,7 @@ public class FileBasedDatabase implements Database {
       return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
 
     } catch (IOException ex) {
-      throw new RuntimeException("Failed to delete invoice with id:"+id, ex);
+      throw new RuntimeException("Failed to delete invoice with id:" + id, ex);
     }
   }
 
