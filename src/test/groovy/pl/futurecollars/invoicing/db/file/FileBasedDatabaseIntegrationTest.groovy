@@ -30,6 +30,10 @@ class FileBasedDatabaseIntegrationTest extends AbstractDatabaseTest{
         db.save(TestHelpers.invoice(1))
         then:
         1 == Files.readAllLines(dbPath).size()
+        when:
+        db.save(TestHelpers.invoice(5))
+        then:
+        2 == Files.readAllLines(dbPath).size()
 
     }
 }

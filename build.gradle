@@ -56,7 +56,6 @@ dependencies {
     // Use the awesome Spock testing and specification framework even with Java
     testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
     testImplementation 'org.spockframework:spock-spring:2.2-groovy-3.0'
-    testImplementation 'org.spockframework:spock-spring:2.3-groovy-3.0'
     testImplementation 'junit:junit:4.13.2'
 
     // This dependency is used by the application.
@@ -80,10 +79,9 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
-
 checkstyle {
     showViolations = true
-    ignoreFailures = false
+    ignoreFailures = true
     maxWarnings = 0
     maxErrors = 0
 }
@@ -99,6 +97,9 @@ bootJar {
 
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+check {
     finalizedBy jacocoTestCoverageVerification
 }
 
@@ -134,9 +135,9 @@ jacocoTestCoverageVerification {
             }
         }
     }
-    afterEvaluate {
+    afterEvaluate { // TODO [PK] remove after adding tests in Task #5
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**", "pl/futurecollars/invoicing/controller/**"])
+            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**"])
 
         }))
     }

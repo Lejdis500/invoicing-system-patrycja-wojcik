@@ -85,13 +85,9 @@ class InvoiceServiceIntegrationTest extends Specification {
         result == Optional.of(originalInvoice)
     }
 
-    def "updating not existing invoice return empty"() {
-        when:
-        Optional<Invoice> updatedInvoice = service.update(213, invoices.get(1))
-
-        then:
-
-        updatedInvoice.isEmpty()
+      def "updating not existing invoice returns Optional.empty"() {
+        expect:
+        service.update(213, invoices.get(1)) == Optional.empty()
     }
 
 }

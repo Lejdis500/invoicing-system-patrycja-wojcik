@@ -1,12 +1,12 @@
-package pl.futurecollars.invoicing.controller
+package pl.futurecollars.invoicing.controller.invoice
 
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
-
-//@WebMvcTest(controllers = [InvoiceController])
+import pl.futurecollars.invoicing.controller.AbstractControllerTest;
 
 class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     def "empty array is returned when no invoices were added"() {
@@ -15,15 +15,12 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     }
 
     def "add invoice returns sequential id"() {
-        given:
-        def invoiceAsJson = invoiceAsJson(1)
-
         expect:
-        def firstId = addInvoiceAndReturnId(invoiceAsJson)
-        addInvoiceAndReturnId(invoiceAsJson) == firstId + 1
-        addInvoiceAndReturnId(invoiceAsJson) == firstId + 2
-        addInvoiceAndReturnId(invoiceAsJson) == firstId + 3
-        addInvoiceAndReturnId(invoiceAsJson) == firstId + 4
+        def firstId = addInvoiceAndReturnId(invoice(1))
+        addInvoiceAndReturnId(invoice(2)) == firstId + 1
+        addInvoiceAndReturnId(invoice(3)) == firstId + 2
+        addInvoiceAndReturnId(invoice(4)) == firstId + 3
+        addInvoiceAndReturnId(invoice(5)) == firstId + 4
     }
 
     def "all invoices are returned when getting all invoices"() {
@@ -55,7 +52,7 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.get("$INVOICE_ENDPOINT/$id")
+                MockMvcRequestBuilders.get("$AbstractControllerTest.INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
 
@@ -68,7 +65,7 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("$INVOICE_ENDPOINT/$id")
+                MockMvcRequestBuilders.delete("$AbstractControllerTest.INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
 
@@ -78,10 +75,12 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
     }
 
     def "404 is returned when invoice id is not found when updating invoice [#id]"() {
+        given:
+        addUniqueInvoices(11)
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.put("$INVOICE_ENDPOINT/$id")
+                MockMvcRequestBuilders.put("$AbstractControllerTest.INVOICE_ENDPOINT/$id")
                         .content(invoiceAsJson(1))
                         .contentType(MediaType.APPLICATION_JSON)
         )
@@ -94,13 +93,13 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest{
 
     def "invoice date can be modified"() {
         given:
-        def id = addInvoiceAndReturnId(invoiceAsJson(44))
+        def id = addInvoiceAndReturnId(invoice(44))
         def updatedInvoice = invoice(123)
         updatedInvoice.id = id
 
         expect:
         mockMvc.perform(
-                MockMvcRequestBuilders.put("$INVOICE_ENDPOINT/$id")
+                MockMvcRequestBuilders.put("$AbstractControllerTest.INVOICE_ENDPOINT/$id")
                         .content(jsonService.toJson(updatedInvoice))
                         .contentType(MediaType.APPLICATION_JSON)
         )

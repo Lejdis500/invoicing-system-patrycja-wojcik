@@ -25,8 +25,8 @@ public class FileBasedDatabase implements Database {
       invoice.setId(idService.getNextIdAndIncrement());
       filesService.appendLineToFile(databasePath, jsonService.toJson(invoice));
       return invoice.getId();
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to save invoice in database", e);
+    } catch (IOException ex) {
+      throw new RuntimeException(" Database failed to save invoice", ex);
     }
   }
 
@@ -38,8 +38,8 @@ public class FileBasedDatabase implements Database {
           .filter(line -> containsId(line, id))
           .map(line -> jsonService.toObject(line, Invoice.class))
           .findFirst();
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to getById invoice in databse", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Database failed to get invoice with id:" + id, ex);
     }
   }
 
@@ -50,8 +50,8 @@ public class FileBasedDatabase implements Database {
           .stream()
           .map(line -> jsonService.toObject(line, Invoice.class))
           .collect(Collectors.toList());
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to get all invoice in databse", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Failed to read invoices from file", ex);
     }
   }
 
@@ -59,19 +59,16 @@ public class FileBasedDatabase implements Database {
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
     try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
-      List<String> listWithoutInvoiceWIthId = allInvoices.stream()
+      var invoiceWithoutInvoiceWIthId = allInvoices
+          .stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
 
-      if (allInvoices.size() == listWithoutInvoiceWIthId.size()) {
-        return Optional.empty();
-      }
-
       updatedInvoice.setId(id);
-      listWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
-      filesService.writeLinesToFile(databasePath, listWithoutInvoiceWIthId);
+      invoiceWithoutInvoiceWIthId.add(jsonService.toJson(updatedInvoice));
+      filesService.writeLinesToFile(databasePath, invoiceWithoutInvoiceWIthId);
 
-      allInvoices.removeAll(listWithoutInvoiceWIthId);
+      allInvoices.removeAll(invoiceWithoutInvoiceWIthId);
       return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -92,13 +89,12 @@ public class FileBasedDatabase implements Database {
       allInvoices.removeAll(invoicesExceptDeleted);
       return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
 
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Failed to delete invoice with id:" + id, ex);
     }
   }
 
   private boolean containsId(String line, int id) {
     return line.contains("\"id\":" + id + ",");
   }
-
 }
