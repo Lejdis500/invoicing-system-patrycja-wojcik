@@ -4,31 +4,50 @@ import pl.futurecollars.invoicing.utils.FilesService
 import spock.lang.Specification
 
 import java.nio.file.Files
+import java.nio.file.Path
 
 class IdServiceTest extends Specification {
 
-    def path = File.createTempFile('test', '.txt').toPath()
+    private final Path nextIdDbPath = File.createTempFile('nextId', '.txt').toPath()
 
-    def "should return next id increment if file is empty"() {
+    def "next id starts from 1 if file was empty"() {
         given:
-        def idService = new IdService(path, new FilesService())
-        when:
-        def result = idService.getNextIdAndIncrement()
-        then:
-        result == 1
-        ["2"] == Files.readAllLines(path)
+        IdService idService = new IdService(nextIdDbPath, new FilesService())
+
+        expect:
+        Files.readAllLines(nextIdDbPath) == ['1']
+
+        and:
+        idService.getNextIdAndIncrement() == 1
+        Files.readAllLines(nextIdDbPath) == ['2']
+
+        and:
+        idService.getNextIdAndIncrement() == 2
+        Files.readAllLines(nextIdDbPath) == ['3']
+
+        and:
+        idService.getNextIdAndIncrement() == 3
+        Files.readAllLines(nextIdDbPath) == ['4']
     }
 
-    def "should return next id and increment if file is not empty"() {
+    def "next id starts from last number if file was not empty"() {
         given:
-        Files.writeString(path, "10")
-        def idService = new IdService(path, new FilesService())
-        when:
-        def result = idService.getNextIdAndIncrement()
-        then:
-        result == 10
-        ["11"] == Files.readAllLines(path)
+        Files.writeString(nextIdDbPath, "17")
+        IdService idService = new IdService(nextIdDbPath, new FilesService())
+
+        expect:
+        Files.readAllLines(nextIdDbPath) == ['17']
+
+        and:
+        idService.getNextIdAndIncrement() == 17
+        Files.readAllLines(nextIdDbPath) == ['18']
+
+        and:
+        idService.getNextIdAndIncrement() == 18
+        Files.readAllLines(nextIdDbPath) == ['19']
+
+        and:
+        idService.getNextIdAndIncrement() == 19
+        Files.readAllLines(nextIdDbPath) == ['20']
     }
-
-
 }

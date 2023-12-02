@@ -1,49 +1,83 @@
 package pl.futurecollars.invoicing.utils;
 
 import spock.lang.Specification
-
-import javax.sound.sampled.Line
+import java.nio.file.Path
 import java.nio.file.Files;
 
 class FilesServiceTest extends Specification {
 
-    def filesService = new FilesService()
-    def path = File.createTempFile('test', '.txt').toPath()
+    private final FilesService filesService = new FilesService()
+    private final Path path = File.createTempFile('lines', '.txt').toPath()
 
-    def "should append line to file"() {
-        given:
-        def line = "test line"
+    def "line is correctly appended to file"() {
+        setup:
+        def testLine = "Test line to write"
+
+        expect:
+        [] == Files.readAllLines(path)
+
         when:
-        filesService.appendLineToFile(path, line)
+        filesService.appendLineToFile(path, testLine)
+
         then:
-        [line] == Files.readAllLines(path)
+        [testLine] == Files.readAllLines(path)
+
+        when:
+        filesService.appendLineToFile(path, testLine)
+
+        then:
+        [testLine, testLine] == Files.readAllLines(path)
     }
 
-    def "should write to file"() {
-        given:
-        def line = "test line"
+    def "line is correctly written to file"() {
+        expect:
+        [] == Files.readAllLines(path)
+
         when:
-        filesService.writeToFile(path, line)
+        filesService.writeToFile(path, "1")
+
         then:
-        [line] == Files.readAllLines(path)
+        ["1"] == Files.readAllLines(path)
+
+        when:
+        filesService.writeToFile(path, "2")
+
+        then:
+        ["2"] == Files.readAllLines(path)
     }
 
-    def "should write lines to file"() {
+    def "list of lines is correctly written to file"() {
         given:
-        def line = "test line"
+        def digits = ['1', '2', '3']
+        def letters = ['a', 'b', 'c']
+
+        expect:
+        [] == Files.readAllLines(path)
+
         when:
-        filesService.writeLinesToFile(path, [line])
+        filesService.writeLinesToFile(path, digits)
+
         then:
-        [line] == Files.readAllLines(path)
+        digits == Files.readAllLines(path)
+
+        when:
+        filesService.writeLinesToFile(path, letters)
+
+        then:
+        letters == Files.readAllLines(path)
     }
 
-    def "should read all lines"() {
-        given:
-        def line = "test line"
-        filesService.writeLinesToFile(path, [line])
-        when:
-        def result = filesService.readAllLines(path)
-        then:
-        [line] == result
+    def "line is correctly read from file"() {
+        setup:
+        def lines = List.of("line 1", "line 2", "line 3")
+        Files.write(path, lines)
+
+        expect:
+        lines == filesService.readAllLines(path)
+    }
+
+    def "empty file returns empty collection"() {
+        expect:
+        [] == filesService.readAllLines(path)
     }
 }

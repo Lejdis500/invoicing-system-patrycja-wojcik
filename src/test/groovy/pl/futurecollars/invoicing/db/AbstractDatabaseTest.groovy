@@ -21,7 +21,7 @@ abstract class AbstractDatabaseTest extends Specification {
         ids == (1..invoices.size()).collect()
         ids.forEach({ assert database.getById(it).isPresent() })
         ids.forEach({ assert database.getById(it).get().getId() == it })
-        ids.forEach({ assert database.getById(it).get() == invoices.get(it - 1) })
+        ids.forEach({ assert resetIds(database.getById(it).get()) == invoices.get(it - 1) })
     }
 
     def "get by id returns empty optional when there is no invoice with given id"() {
@@ -40,14 +40,14 @@ abstract class AbstractDatabaseTest extends Specification {
 
         expect:
         database.getAll().size() == invoices.size()
-        database.getAll().forEach({ assert it == invoices.get(it.getId() - 1) })
+        database.getAll().forEach({ assert resetIds(it) == invoices.get(it.getId() - 1) })
 
         when:
         database.delete(1)
 
         then:
         database.getAll().size() == invoices.size() - 1
-        database.getAll().forEach({ assert it == invoices.get(it.getId() - 1) })
+        database.getAll().forEach({ assert resetIds(it) == invoices.get(it.getId() - 1) })
         database.getAll().forEach({ assert it.getId() != 1 })
     }
 
@@ -69,17 +69,30 @@ abstract class AbstractDatabaseTest extends Specification {
 
     def "it's possible to update the invoice and original invoice is returned"() {
         given:
-        int id = database.save(invoices.get(0))
+        def originalInvoice = invoices.get(0)
+        originalInvoice.id = database.save(originalInvoice)
+
+        def expectedInvoice = invoices.get(1)
+        expectedInvoice.id = originalInvoice.id
 
         when:
-        database.update(id, invoices.get(1))
+        def result = database.update(originalInvoice.id, expectedInvoice)
 
         then:
-        database.getById(id).get() == invoices.get(1)
+        def invoiceAfterUpdate = database.getById(originalInvoice.id).get()
+        resetIds(invoiceAfterUpdate) == expectedInvoice
+        resetIds(result.get()) == originalInvoice
     }
 
     def "updating not existing invoice returns Optional.empty()"() {
         expect:
         database.update(213, invoices.get(1)) == Optional.empty()
     }
+
+    def Invoice resetIds(Invoice invoice){
+        invoice.getBuyer().id = 0
+        invoice.getSeller().id = 0
+        invoice
+    }
+
 }
