@@ -127,26 +127,6 @@ jacocoTestReport {
     }
 }
 
-task testWithFileDatabase(type: Test){
-    systemProperty 'spring.profiles.active' , 'file'
-}
-
-task testWithMemoryDatabase(type: Test){
-    systemProperty 'spring.profiles.active' , 'memory'
-}
-
-task testWithSqlDatabase(type: Test){
-    systemProperty 'spring.profiles.active' , 'sql'
-}
-
-task testWithPostgreSqlDatabase(type: Test){
-    systemProperty 'spring.profiles.active' , 'sql-pg'
-}
-
-check.dependsOn testWithFileDatabase
-check.dependsOn testWithMemoryDatabase
-check.dependsOn testWithSqlDatabase
-
 jacocoTestCoverageVerification {
     violationRules {
         rule {
@@ -169,6 +149,7 @@ jacocoTestCoverageVerification {
         }))
     }
 }
+
 task testWithFileDatabase(type: Test) {
     systemProperty 'spring.profiles.active', 'file'
 }
