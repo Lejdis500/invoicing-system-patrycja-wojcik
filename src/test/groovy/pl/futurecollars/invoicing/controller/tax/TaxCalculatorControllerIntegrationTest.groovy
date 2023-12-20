@@ -180,6 +180,7 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
                         InvoiceEntry.builder()
                                 .netPrice(76011.62)
                                 .vatValue(0.0)
+                                .quantity(1.0)
                                 .vatRate(Vat.VAT_0)
                                 .build()
                 ))
@@ -194,8 +195,10 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
                         InvoiceEntry.builder()
                                 .netPrice(11329.47)
                                 .vatValue(0.0)
+                                .quantity(1.0)
                                 .vatRate(Vat.VAT_ZW)
                                 .build()
+
                 ))
                 .build()
 

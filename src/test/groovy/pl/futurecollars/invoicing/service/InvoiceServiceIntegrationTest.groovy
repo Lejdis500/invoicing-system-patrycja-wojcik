@@ -72,10 +72,10 @@ class InvoiceServiceIntegrationTest extends Specification {
         service.delete(123) == Optional.empty()
     }
 
-    def "it's possible to update the invoice, prev invoice is returned"() {
+    def "it's possible to update the invoice, previous invoice is returned"() {
         given:
         def originalInvoice = invoices.get(0)
-        int id = service.save(invoices.get(0))
+        long id = service.save(originalInvoice)
 
         when:
         def result = service.update(id, invoices.get(1))
@@ -85,9 +85,8 @@ class InvoiceServiceIntegrationTest extends Specification {
         result == Optional.of(originalInvoice)
     }
 
-      def "updating not existing invoice returns Optional.empty"() {
+    def "updating not existing invoice returns Optional.empty()"() {
         expect:
         service.update(213, invoices.get(1)) == Optional.empty()
     }
-
 }

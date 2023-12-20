@@ -28,4 +28,4 @@ class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
 
         new SqlDatabase(jdbcTemplate)
     }
-    }
+}

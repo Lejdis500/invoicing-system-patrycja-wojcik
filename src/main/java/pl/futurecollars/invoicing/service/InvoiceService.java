@@ -8,7 +8,6 @@ import pl.futurecollars.invoicing.model.Invoice;
 
 @Service
 public class InvoiceService {
-
   private final Database database;
 
   public InvoiceService(Database database) {
@@ -19,7 +18,7 @@ public class InvoiceService {
     return database.save(invoice);
   }
 
-  public Optional<Invoice> getById(int id) {
+  public Optional<Invoice> getById(long id) {
     return database.getById(id);
   }
 
@@ -27,12 +26,11 @@ public class InvoiceService {
     return database.getAll();
   }
 
-  public Optional<Invoice> update(int id, Invoice updatedInvoice) {
+  public Optional<Invoice> update(long id, Invoice updatedInvoice) {
     return database.update(id, updatedInvoice);
   }
 
-  public Optional<Invoice> delete(int id) {
+  public Optional<Invoice> delete(long id) {
     return database.delete(id);
   }
-
 }
