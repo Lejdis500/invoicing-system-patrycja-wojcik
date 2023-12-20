@@ -286,14 +286,4 @@ public class SqlDatabase implements Database {
     });
   }
 
-  @PostConstruct
-  void initVatRatesMap() { // default so it can be called from SqlDatabaseIntegrationTest
-    jdbcTemplate.query("select * from vat",
-        rs -> {
-          Vat vat = Vat.valueOf("VAT_" + rs.getString("name"));
-          int id = rs.getInt("id");
-          vatToId.put(vat, id);
-          idToVat.put(id, vat);
-        });
-  }
 }
