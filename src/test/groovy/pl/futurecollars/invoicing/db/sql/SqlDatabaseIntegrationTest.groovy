@@ -7,11 +7,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType
 import pl.futurecollars.invoicing.db.AbstractDatabaseTest
 import pl.futurecollars.invoicing.db.Database
-import pl.futurecollars.invoicing.db.sql.SqlDatabase
 
 import javax.sql.DataSource
 
 class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
+    @Override
+
     @Override
     Database getDatabaseInstance() {
         DataSource dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build()
@@ -25,9 +26,6 @@ class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
         flyway.clean()
         flyway.migrate()
 
-        def database = new SqlDatabase(jdbcTemplate)
-        database.initVatRatesMap() // need to call explicitly because we do not create it as spring bean
-
-        database
+        new SqlDatabase(jdbcTemplate)
     }
 }

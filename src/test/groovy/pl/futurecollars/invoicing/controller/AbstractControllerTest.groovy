@@ -1,6 +1,5 @@
 package pl.futurecollars.invoicing.controller
 
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -65,12 +64,12 @@ class AbstractControllerTest extends Specification {
         }
     }
 
-    void deleteInvoice(int id) {
+    void deleteInvoice(long id) {
         mockMvc.perform(delete("$INVOICE_ENDPOINT/$id"))
                 .andExpect(status().isNoContent())
     }
 
-    Invoice getInvoiceById(int id) {
+    Invoice getInvoiceById(long id) {
         def invoiceAsString = mockMvc.perform(get("$INVOICE_ENDPOINT/$id"))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -80,15 +79,15 @@ class AbstractControllerTest extends Specification {
         jsonService.toObject(invoiceAsString, Invoice)
     }
 
-    String invoiceAsJson(int id) {
+    String invoiceAsJson(long id) {
         jsonService.toJson(invoice(id))
     }
 
     TaxCalculatorResult calculateTax(Company company) {
         def response = mockMvc.perform(
                 post("$TAX_CALCULATOR_ENDPOINT")
-                .content(jsonService.toJson(company))
-                .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonService.toJson(company))
+                        .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andReturn()

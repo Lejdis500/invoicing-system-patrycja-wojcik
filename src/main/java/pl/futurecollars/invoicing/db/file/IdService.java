@@ -10,11 +10,12 @@ public class IdService {
   private final Path idFilePath;
   private final FilesService filesService;
 
-  private int nextId = 1;
+  private long nextId = 1;
 
   public IdService(Path idFilePath, FilesService filesService) {
     this.idFilePath = idFilePath;
     this.filesService = filesService;
+
     try {
       List<String> lines = filesService.readAllLines(idFilePath);
       if (lines.isEmpty()) {
@@ -25,9 +26,10 @@ public class IdService {
     } catch (IOException ex) {
       throw new RuntimeException("Failed to initialize id database", ex);
     }
+
   }
 
-  public int getNextIdAndIncrement() {
+  public long getNextIdAndIncrement() {
     try {
       filesService.writeToFile(idFilePath, String.valueOf(nextId + 1));
       return nextId++;
@@ -36,3 +38,4 @@ public class IdService {
     }
   }
 }
+

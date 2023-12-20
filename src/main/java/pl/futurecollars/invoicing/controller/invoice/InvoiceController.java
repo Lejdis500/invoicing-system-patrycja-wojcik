@@ -1,7 +1,7 @@
 package pl.futurecollars.invoicing.controller.invoice;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,14 +10,11 @@ import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.service.InvoiceService;
 
 @RestController
+@AllArgsConstructor
 public class InvoiceController implements InvoiceApi {
 
   private InvoiceService invoiceService;
 
-  @Autowired
-  public InvoiceController(InvoiceService invoiceService) {
-    this.invoiceService = invoiceService;
-  }
 
   @Override
   public List<Invoice> getAll() {
@@ -25,7 +22,7 @@ public class InvoiceController implements InvoiceApi {
   }
 
   @Override
-  public int add(@RequestBody Invoice invoice) {
+  public long add(@RequestBody Invoice invoice) {
     return invoiceService.save(invoice);
   }
 
