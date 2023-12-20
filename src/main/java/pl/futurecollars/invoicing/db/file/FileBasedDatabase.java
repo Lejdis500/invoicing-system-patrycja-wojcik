@@ -15,7 +15,7 @@ import pl.futurecollars.invoicing.utils.JsonService;
 public class FileBasedDatabase implements Database {
 
   private final Path databasePath;
-  private final IdService idService;
+  private final IdService idProvider;
   private final FilesService filesService;
   private final JsonService jsonService;
 
