@@ -122,6 +122,7 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
                                 .vatValue(BigDecimal.valueOf(23.45))
                                 .vatRate(Vat.VAT_23)
                                 .netPrice(BigDecimal.valueOf(100))
+                                .quantity(1.0)
                                 .expenseRelatedToCar(
                                         Car.builder()
                                                 .personalUse(true)
