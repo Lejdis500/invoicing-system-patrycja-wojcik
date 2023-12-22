@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class InvoiceEntry {
+
   @Id
   @JsonIgnore
   @JoinColumn(name = "entry_id")
