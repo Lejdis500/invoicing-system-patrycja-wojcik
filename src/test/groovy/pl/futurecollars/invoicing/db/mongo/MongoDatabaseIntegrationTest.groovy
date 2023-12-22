@@ -10,7 +10,7 @@ import pl.futurecollars.invoicing.db.Database
 @IfProfileValue(name = "spring.profiles.active", value = "mongo")
 class MongoDatabaseIntegrationTest extends AbstractDatabaseTest {
     @Autowired
-    private MomgoBasedDatabase.MongoBasedDatabase mongoDatabase
+    private MongoBasedDatabase mongoDatabase
 
     @Override
     Database getDatabaseInstance() {

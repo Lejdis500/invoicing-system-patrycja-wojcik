@@ -22,8 +22,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pl.futurecollars.invoicing.db.file.FileBasedDatabase;
 import pl.futurecollars.invoicing.db.file.IdService;
-import pl.futurecollars.invoicing.db.jpa.InvoiceRepository;
-import pl.futurecollars.invoicing.db.jpa.JpaDatabase;
 import pl.futurecollars.invoicing.db.memory.InMemoryDatabase;
 import pl.futurecollars.invoicing.db.mongo.MongoBasedDatabase;
 import pl.futurecollars.invoicing.db.mongo.MongoIdProvider;
@@ -82,8 +80,8 @@ public class DatabaseConfiguration {
 
   @Bean
   @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "mongo")
-  public MongoDatabse mongoDb(
-      @Value("${invoaicing-system.database.name}") String databaseName
+  public MongoDatabase mongoDb(
+      @Value("${invoicing-system.database.name}") String databaseName
   ) {
     CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
         fromProviders(PojoCodecProvider.builder().automatic(true).build()));
