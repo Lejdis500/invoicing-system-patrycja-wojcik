@@ -42,4 +42,5 @@ public class InMemoryDatabase implements Database {
   public Optional<Invoice> delete(long id) {
     return Optional.ofNullable(invoices.remove(id));
   }
+
 }
