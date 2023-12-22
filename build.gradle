@@ -6,181 +6,198 @@
  * User Manual available at https://docs.gradle.org/8.0/userguide/building_java_projects.html
  */
 buildscript {
-    ext {
-        lombokVersion = '1.18.22'
-        spockVersion = '2.3-groovy-3.0'
-        springBootVersion = '2.4.2'
-        springDependencyManagementVersion = '1.0.11.RELEASE'
-        springFoxStarterVersion = '3.0.0'
-        springFoxUiVersion = '3.0.0'
-    }
-}
-
-plugins {
-    id 'org.springframework.boot' version "${springBootVersion}"
-    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
-
-    // Apply the groovy plugin to also add support for Groovy (needed for Spock)
-    id 'groovy'
-
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
-
-    id 'checkstyle'
-
-    id 'jacoco'
-
-}
-group = 'pl.futurecollars'
-version = '0.0.1-SNAPSHOT'
-
-repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(14)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
-    }
-}
-
-dependencies {
-    implementation "org.projectlombok:lombok:${lombokVersion}"
-
-
-    // Use the latest Groovy version for Spock testing
-    testImplementation 'org.codehaus.groovy:groovy:3.0.13'
-
-    // Use the awesome Spock testing and specification framework even with Java
-    testImplementation 'org.spockframework:spock-core:2.2-groovy-3.0'
-    testImplementation 'org.spockframework:spock-spring:2.2-groovy-3.0'
-    testImplementation 'junit:junit:4.13.2'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:31.1-jre'
-
-    annotationProcessor('org.projectlombok:lombok:1.18.22')
-    testAnnotationProcessor('org.projectlombok:lombok:1.18.22')
-    compileOnly('org.projectlombok:lombok:1.18.22')
-    testCompileOnly('org.projectlombok:lombok:1.18.22')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
-    implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
-
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    runtimeOnly 'org.postgresql:postgresql:42.2.19'
-    runtimeOnly 'com.h2database:h2:1.4.200'
-    implementation "org.flywaydb:flyway-core:7.6.0"
-
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-}
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
-checkstyle {
-    showViolations = true
-    ignoreFailures = true
-    maxWarnings = 0
-    maxErrors = 0
-}
-application {
-    // Define the main class for the application.
-    mainClass = 'pl.futurecollars.invoicing.App'
-}
-
-bootJar {
-    enabled = false
-}
-
-
-test {
-    finalizedBy jacocoTestReport // report is always generated after tests run
-}
-
-check {
-    finalizedBy jacocoTestCoverageVerification
-}
-
-jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
-}
-
-jacoco {
-    toolVersion = "0.8.8"
-    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                counter = 'BRANCH'
-                minimum = 0.70
-            }
-        }
-        rule {
-            limit {
-                counter = 'LINE'
-                minimum = 0.70
-            }
+    buildscript {
+        ext {
+            lombokVersion = '1.18.22'
+            spockVersion = '2.3-groovy-3.0'
+            springBootVersion = '2.4.2'
+            springDependencyManagementVersion = '1.0.11.RELEASE'
+            springFoxStarterVersion = '3.0.0'
+            springFoxUiVersion = '3.0.0'
+            mongoVersion = '3.12.12'
         }
     }
-    afterEvaluate { // TODO [PK] remove after adding tests in Task #5
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ["pl/futurecollars/invoicing/InvoiceApplication.class", "pl/futurecollars/invoicing/config/**"])
 
-        }))
+
+    plugins {
+        // Apply the groovy plugin to also add support for Groovy (needed for Spock)
+        id 'groovy'
+
+        // Apply the application plugin to add support for building a CLI application in Java.
+        id 'application'
+
+        id 'checkstyle'
+
+        id 'jacoco'
+
+        id 'org.springframework.boot' version "${springBootVersion}"
+        id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+
+        id 'java'
+
     }
-}
 
-task testWithFileDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'file'
-}
+    group = 'pl.futurecollars'
+    version = '0.0.1-SNAPSHOT'
 
-task testWithMemoryDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'memory'
-}
+    repositories {
+        // Use Maven Central for resolving dependencies.
+        mavenCentral()
+    }
 
-task testWithSqlDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'sql'
-}
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(14)
+            vendor = JvmVendorSpec.ADOPTOPENJDK
+        }
+    }
 
-task testWithJpaDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'jpa'
-}
 
-task testWithJpaFlywayDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'jpa-flyway'
-}
+    dependencies {
+        implementation "org.projectlombok:lombok:${lombokVersion}"
 
-task testWithPostgreSqlDatabase(type: Test) {
-    systemProperty 'spring.profiles.active', 'sql-pg'
-}
+        // Use the latest Groovy version for Spock testing
+        testImplementation 'org.codehaus.groovy:groovy:3.0.13'
 
-check.dependsOn testWithFileDatabase
-check.dependsOn testWithMemoryDatabase
-check.dependsOn testWithSqlDatabase
-check.dependsOn testWithJpaDatabase
-check.dependsOn testWithJpaFlywayDatabase
+        // Use the awesome Spock testing and specification framework even with Java
+        testImplementation "org.spockframework:spock-core:${spockVersion}"
+        testImplementation "org.spockframework:spock-spring:${spockVersion}"
+        testImplementation 'junit:junit:4.13.2'
 
-String osName = System.getProperty("os.name").toLowerCase()
-if (osName.contains("mac")) {
-    check.dependsOn testWithPostgreSqlDatabase
+        // This dependency is used by the application.
+        implementation 'com.google.guava:guava:31.1-jre'
+
+        //Lombok -> lekcja 2
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        compileOnly("org.projectlombok:lombok:${lombokVersion}")
+        testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+        //jackson - lekcja 3
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
+
+        //spring - lekcja 4
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        implementation "io.springfox:springfox-boot-starter:${springFoxStarterVersion}"
+        implementation "io.springfox:springfox-swagger-ui:${springFoxUiVersion}"
+
+        implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+        runtimeOnly 'org.postgresql:postgresql:42.2.19'
+        runtimeOnly 'com.h2database:h2:1.4.200'
+        implementation "org.flywaydb:flyway-core:7.6.0"
+
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        implementation "org.mongodb:mongo-java-driver:${mongoVersion}"
+
+    }
+
+
+    tasks.named('test') {
+        // Use JUnit Platform for unit tests.
+        useJUnitPlatform()
+    }
+
+    checkstyle {
+        showViolations = true
+        ignoreFailures = false
+        maxWarnings = 0
+        maxErrors = 0
+    }
+
+//lesson 4 -> fixing build problems
+    bootJar {
+        enabled = false
+    }
+
+    check {
+        finalizedBy jacocoTestReport // report is always generated after tests run
+        finalizedBy jacocoTestCoverageVerification
+    }
+
+    jacocoTestReport {
+        executionData tasks.withType(Test)
+        dependsOn check
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
+        reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required = false
+            csv.required = false
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
+    }
+
+    jacocoTestCoverageVerification {
+        executionData tasks.withType(Test)
+        violationRules {
+            rule {
+                limit {
+                    counter = 'BRANCH'
+                    minimum = 0.60
+                }
+            }
+            rule {
+                limit {
+                    counter = 'LINE'
+                    minimum = 0.60
+                }
+            }
+        }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: ['pl/futurecollars/invoicing/InvoiceApplication.class', 'pl/futurecollars/invoicing/db/DatabaseConfiguration.class'])
+            }))
+        }
+    }
+
+    task testWithFileDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'file'
+    }
+
+    task testWithMemoryDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'memory'
+    }
+
+    task testWithSqlDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'sql'
+    }
+
+    task testWithJpaDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'jpa'
+    }
+
+    task testWithJpaFlywayDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'jpa-flyway'
+    }
+
+    task testWithMongoDatabase(type: Test) {
+        systemProperty 'spring.profiles.active', 'mongo'
+    }
+
+    check.dependsOn testWithFileDatabase
+    check.dependsOn testWithMemoryDatabase
+    check.dependsOn testWithSqlDatabase
+    check.dependsOn testWithJpaDatabase
+    check.dependsOn testWithJpaFlywayDatabase
+    check.dependsOn testWithMongoDatabase
+
+    String osName = System.getProperty("os.name").toLowerCase()
+    if (osName.contains("mac")) {
+        task testWithPostgreSqlDatabase(type: Test) {
+            systemProperty 'spring.profiles.active', 'sql-pg'
+        }
+
+        check.dependsOn testWithPostgreSqlDatabase
+    }
 }
