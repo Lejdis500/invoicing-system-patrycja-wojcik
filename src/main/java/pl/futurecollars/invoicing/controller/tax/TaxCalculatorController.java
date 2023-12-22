@@ -11,6 +11,7 @@ import pl.futurecollars.invoicing.service.TaxCalculatorService;
 @AllArgsConstructor
 
 public class TaxCalculatorController implements TaxCalculatorApi {
+
   private final TaxCalculatorService taxService;
 
   @Override
