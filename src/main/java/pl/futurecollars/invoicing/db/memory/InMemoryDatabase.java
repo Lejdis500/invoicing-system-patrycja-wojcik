@@ -9,8 +9,6 @@ import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 
 public class InMemoryDatabase implements Database {
-
-
   private final Map<Long, Invoice> invoices = new HashMap<>();
   private long nextId = 1;
 
