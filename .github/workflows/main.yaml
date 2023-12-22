@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ lesson* ]
+    branches: [ task* ]
 
   workflow_dispatch:
 
