@@ -1,3 +1,4 @@
+
 package pl.futurecollars.invoicing.memory;
 
 import java.util.ArrayList;

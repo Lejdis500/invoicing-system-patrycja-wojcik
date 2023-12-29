@@ -13,7 +13,6 @@ public class InMemoryDatabase implements Database {
   private final Map<Long, Invoice> invoices = new HashMap<>();
   private long nextId = 1;
 
-
   @Override
   public long save(Invoice invoice) {
     invoice.setId(nextId);

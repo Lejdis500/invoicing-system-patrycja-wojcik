@@ -15,7 +15,6 @@ public class InvoiceController implements InvoiceApi {
 
   private InvoiceService invoiceService;
 
-
   @Override
   public List<Invoice> getAll() {
     return invoiceService.getAll();
