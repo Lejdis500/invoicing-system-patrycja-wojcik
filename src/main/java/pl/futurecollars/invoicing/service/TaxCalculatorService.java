@@ -15,6 +15,7 @@ import pl.futurecollars.invoicing.model.InvoiceEntry;
 @Service
 @AllArgsConstructor
 public class TaxCalculatorService {
+
   private final Database database;
 
   public BigDecimal income(String taxIdentificationNumber) {

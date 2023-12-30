@@ -1,16 +1,15 @@
 package pl.futurecollars.invoicing.db.sql;
 
-import pl.futurecollars.invoicing.db.Database;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.transaction.annotation.Transactional;
+import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Car;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
@@ -19,6 +18,7 @@ import pl.futurecollars.invoicing.model.Vat;
 
 @AllArgsConstructor
 public class SqlDatabase implements Database {
+
   public static final String SELECT_QUERY = "select i.id, i.date, i.number, "
       + "c1.id as seller_id, c1.name as seller_name, c1.tax_identification_number as seller_tax_id, c1.address as seller_address, "
       + "c1.pension_insurance as seller_pension_insurance, c1.health_insurance as seller_health_insurance, "

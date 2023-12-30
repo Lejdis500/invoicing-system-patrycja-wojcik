@@ -6,29 +6,46 @@ import spock.lang.Specification
 import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 abstract class AbstractDatabaseTest extends Specification {
-
     List<Invoice> invoices = (1..12).collect { invoice(it) }
 
     abstract Database getDatabaseInstance()
+
     Database database
+
     def setup() {
         database = getDatabaseInstance()
         database.reset()
 
         assert database.getAll().isEmpty()
     }
-    def "should save invoices returning sequential id, invoice should have id set to correct value, get by id returns saved invoice"() {
+
+    def "should save invoices returning sequential id"() {
         when:
         def ids = invoices.collect { it.id = database.save(it) }
 
         then:
-        ids == (1L..invoices.size()).collect()
+        (1..invoices.size() - 1).forEach { assert ids[it] == ids[0] + it }
+    }
+
+    def "invoice should have id set to correct value"() {
+        when:
+        def ids = invoices.collect { it.id = database.save(it) }
+
+        then:
         ids.forEach { assert database.getById(it).isPresent() }
         ids.forEach { assert database.getById(it).get().getId() == it }
+    }
+
+    def "get by id returns expected invoice"() {
+        when:
+        def ids = invoices.collect { it.id = database.save(it) }
+
+        then:
         ids.forEach {
-            def expectedInvoice = resetIds(invoices.get((int) it - 1))
-            def invoiceFromDb = resetIds(database.getById(it).get())
-            assert invoiceFromDb.toString() == expectedInvoice.toString()
+            def expectedInvoice = resetIds(invoices.get((int) (it - ids[0]))).toString()
+            def invoiceFromDb = resetIds(database.getById(it).get()).toString()
+
+            assert invoiceFromDb == expectedInvoice
         }
     }
 
@@ -113,10 +130,11 @@ abstract class AbstractDatabaseTest extends Specification {
 
     // resetting is necessary because database query returns ids while we don't know ids in original invoice
     def Invoice resetIds(Invoice invoice) {
-        invoice.getBuyer().id = null
-        invoice.getSeller().id = null
+        invoice.getBuyer().id = 0
+        invoice.getSeller().id = 0
         invoice.entries.forEach {
-            it.id = null
+            it.id = 0
+            it.expenseRelatedToCar?.id = 0
         }
         invoice
     }

@@ -8,6 +8,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 
 @Service
 public class InvoiceService {
+
   private final Database database;
 
   public InvoiceService(Database database) {
