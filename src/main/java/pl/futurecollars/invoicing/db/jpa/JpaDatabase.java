@@ -9,8 +9,8 @@ import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 
 @AllArgsConstructor
-
 public class JpaDatabase implements Database {
+
   private final InvoiceRepository invoiceRepository;
 
   @Override
