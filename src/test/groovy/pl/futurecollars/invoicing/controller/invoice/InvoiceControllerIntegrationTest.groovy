@@ -4,10 +4,14 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import spock.lang.Unroll
 
+import pl.futurecollars.invoicing.controller.AbstractControllerTest;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
-import pl.futurecollars.invoicing.controller.AbstractControllerTest;
+import static pl.futurecollars.invoicing.helpers.TestHelpers.resetIds
 
 @Unroll
 class InvoiceControllerIntegrationTest extends AbstractControllerTest {
