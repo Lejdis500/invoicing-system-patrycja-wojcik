@@ -6,5 +6,4 @@ public interface WithId {
 
   void setId(Long id);
 
-
 }
