@@ -10,6 +10,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 
 @Configuration
 @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "jpa")
+
 public class JpaDatabaseConfiguration {
   @Bean
   public Database<Invoice> invoiceJpaDatabase(InvoiceRepository repository) {

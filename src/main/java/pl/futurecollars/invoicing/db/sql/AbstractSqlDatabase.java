@@ -8,6 +8,7 @@ import pl.futurecollars.invoicing.model.Company;
 
 @AllArgsConstructor
 public class AbstractSqlDatabase {
+
   protected final JdbcTemplate jdbcTemplate;
 
   protected int insertCompany(Company buyer) {

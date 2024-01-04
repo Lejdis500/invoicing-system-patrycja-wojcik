@@ -10,6 +10,7 @@ import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Company;
 
 public class CompanySqlDatabase extends AbstractSqlDatabase implements Database<Company> {
+
   public static final String SELECT_QUERY = "select * from company";
 
   public CompanySqlDatabase(JdbcTemplate jdbcTemplate) {

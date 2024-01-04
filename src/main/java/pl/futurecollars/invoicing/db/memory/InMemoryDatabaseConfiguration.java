@@ -10,6 +10,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 @Configuration
 @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
 public class InMemoryDatabaseConfiguration {
+
   @Bean
   public Database<Invoice> invoiceInMemoryDatabase() {
     return new InMemoryDatabase<>();

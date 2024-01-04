@@ -11,6 +11,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 @Configuration
 @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "sql")
 public class SqlDatabaseConfiguration {
+
   @Bean
   public Database<Invoice> invoiceSqlDatabase(JdbcTemplate jdbcTemplate) {
     return new InvoiceSqlDatabase(jdbcTemplate);
