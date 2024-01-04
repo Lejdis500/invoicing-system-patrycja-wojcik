@@ -8,7 +8,7 @@ import java.util.Optional;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.WithId;
 
-public class InMemoryDatabase<T extends WithId>  {
+public class InMemoryDatabase<T extends WithId> implements Database<T> {
 
   private final Map<Long, T> items = new HashMap<>();
   private long nextId = 1;
