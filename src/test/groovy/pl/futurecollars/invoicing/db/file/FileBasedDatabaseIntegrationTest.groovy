@@ -5,36 +5,42 @@ import pl.futurecollars.invoicing.db.AbstractDatabaseTest
 import pl.futurecollars.invoicing.db.Database
 import pl.futurecollars.invoicing.utils.FilesService
 import pl.futurecollars.invoicing.utils.JsonService
+import pl.futurecollars.invoicing.model.Invoice
 
 import java.nio.file.Files
+import java.nio.file.Path
 
 class FileBasedDatabaseIntegrationTest extends AbstractDatabaseTest{
 
-    def dbPath
+    Path dbPath
 
     @Override
     Database getDatabaseInstance() {
-        def fileService = new FilesService()
+        def filesService = new FilesService()
 
-        def idPath = File.createTempFile("ids", ".txt").toPath()
-        def idService = new IdService(idPath, fileService)
+        def idPath = File.createTempFile('ids', '.txt').toPath()
+        def idService = new IdService(idPath, filesService)
 
         dbPath = File.createTempFile('invoices', '.txt').toPath()
-        return new FileBasedDatabase(dbPath, idService, fileService, new JsonService())
+        new FileBasedDatabase<>(dbPath, idService, filesService, new JsonService(), Invoice)
     }
 
-    def "file based database writes invoices to correct file"(){
+    def "file based database writes invoices to correct file"() {
         given:
         def db = getDatabaseInstance()
+
         when:
-        db.save(TestHelpers.invoice(1))
+        db.save(TestHelpers.invoice(4))
+
         then:
-        1 == Files.readAllLines(dbPath).size()
+        Files.readAllLines(dbPath).size() == 1
+
         when:
         db.save(TestHelpers.invoice(5))
-        then:
-        2 == Files.readAllLines(dbPath).size()
 
+        then:
+        Files.readAllLines(dbPath).size() == 2
     }
+
 }
 

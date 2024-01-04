@@ -1,6 +1,5 @@
 package pl.futurecollars.invoicing.db.sql
 
-
 import org.flywaydb.core.Flyway
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
@@ -10,7 +9,7 @@ import pl.futurecollars.invoicing.db.Database
 
 import javax.sql.DataSource
 
-class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
+class InvoiceSqlDatabaseIntegrationTest extends AbstractDatabaseTest {
     @Override
 
     @Override
@@ -26,6 +25,6 @@ class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
         flyway.clean()
         flyway.migrate()
 
-        new SqlDatabase(jdbcTemplate)
+        new InvoiceSqlDatabase(jdbcTemplate)
     }
 }
